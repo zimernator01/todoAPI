@@ -1,0 +1,139 @@
+# Welcome to Serverless!
+#
+# This file is the main config file for your service.
+# It's very minimal at this point and uses default values.
+# You can always add more config options for more control.
+# We've included some commented out config examples here.
+# Just uncomment any of them to get that config option.
+#
+# For full config options, check the docs:
+#    docs.serverless.com
+#
+# Happy Coding!
+
+service: todo-platform
+# app and org for use with dashboard.serverless.com
+#app: your-app-name
+#org: your-org-name
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  profile: admin
+  stage: dev
+  region: ap-southeast-2
+
+
+functions:
+  insertTodoItem:
+    handler: lambdas/insertTodoItem.handler
+    timeout: 15
+    events:
+      - http:
+          path: /insertTodoItem/{user_id}
+          method: post
+          cors: true
+  getAllTodoItems:
+    handler: lambdas/getAllTodoItems.handler
+    timeout: 15
+    events:
+      - http:
+          path: /getAllTodoItems/{user_id}
+          method: get
+          cors: true
+  getTodoItem:
+    handler: lambdas/getTodoItem.handler
+    timeout: 15
+    events:
+      - http:
+          path: /getTodoItem/{user_id}/{todo_id}
+          method: get
+          cors: true
+  insertUser:
+    handler: lambdas/insertUser.handler
+    timeout: 15
+    events:
+      - http:
+          path: /insertUser
+          method: post
+          cors: true
+  getUser:
+    handler: lambdas/getUser.handler
+    timeout: 15
+    events:
+      - http:
+          path: /getUser/{user_id}
+          method: get
+          cors: true
+  deleteTodoItem:
+    handler: lambdas/deleteTodoItem.handler
+    timeout: 15
+    events:
+      - http:
+          path: /deleteTodoItem/{user_id}/{todo_id}
+          method: delete
+          cors: true
+  updateTodoItem:
+    handler: lambdas/updateTodoItem.handler
+    timeout: 15
+    events:
+      - http:
+          path: /updateTodoItem/{user_id}/{todo_id}
+          method: put
+          cors: true
+          
+#    The following are a few example events you can configure
+#    NOTE: Please make sure to change your handler code to work with those events
+#    Check the event documentation for details
+#    events:
+#      - httpApi:
+#          path: /users/create
+#          method: get
+#      - websocket: $connect
+#      - s3: ${env:BUCKET}
+#      - schedule: rate(10 minutes)
+#      - sns: greeter-topic
+#      - stream: arn:aws:dynamodb:region:XXXXXX:table/foo/stream/1970-01-01T00:00:00.000
+#      - alexaSkill: amzn1.ask.skill.xx-xx-xx-xx
+#      - alexaSmartHome: amzn1.ask.skill.xx-xx-xx-xx
+#      - iot:
+#          sql: "SELECT * FROM 'some_topic'"
+#      - cloudwatchEvent:
+#          event:
+#            source:
+#              - "aws.ec2"
+#            detail-type:
+#              - "EC2 Instance State-change Notification"
+#            detail:
+#              state:
+#                - pending
+#      - cloudwatchLog: '/aws/lambda/hello'
+#      - cognitoUserPool:
+#          pool: MyUserPool
+#          trigger: PreSignUp
+#      - alb:
+#          listenerArn: arn:aws:elasticloadbalancing:us-east-1:XXXXXX:listener/app/my-load-balancer/50dc6c495c0c9188/
+#          priority: 1
+#          conditions:
+#            host: example.com
+#            path: /hello
+
+#    Define function environment variables here
+#    environment:
+#      variable2: value2
+
+# you can add CloudFormation resource templates here
+#resources:
+#  Resources:
+#    NewResource:
+#      Type: AWS::S3::Bucket
+#      Properties:
+#        BucketName: my-new-bucket
+#  Outputs:
+#     NewOutput:
+#       Description: "Description for the output"
+#       Value: "Some output value"
